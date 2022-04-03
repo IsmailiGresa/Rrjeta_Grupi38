@@ -235,9 +235,9 @@ public class client{
             System.out.print("Username: ");
             username = input.nextLine();
 		File file1 = new File("C:/Users/IFES Yoga/Desktop/User/keys/" + username + ".password.json");
-		System.out.println(file1);
-        String password1;
-        boolean same = false;
+                boolean same = false;
+		if(file1.exists()) {
+		String password1;
             System.out.print("Password: ");
             password1 = input.nextLine();
             input.close();
@@ -254,6 +254,8 @@ public class client{
 				same = true;
 			}else {
 				System.out.println("Incorrect");
+			}}else {
+				System.out.println("User does not exist");
 			}
 			return same;
 	}	
