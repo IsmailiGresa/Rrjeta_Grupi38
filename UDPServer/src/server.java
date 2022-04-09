@@ -53,18 +53,21 @@ public class server {
 				String s = new String(data, 0, incoming.getLength());
 				
 				String [] userData = s.split(" ");
-				System.out.println("Command: " + userData[0]);
-				System.out.println("Username: " + userData[1]);
-				System.out.println("Password: " + userData[2]);
+				//System.out.println("Command: " + userData[0]);
+				//System.out.println("Username: " + userData[1]);
+				//System.out.println("Password: " + userData[2]);
 				
 				if(userData[0].equals("create-user")) {
-					
+
 					String user = userData[1];
 					String password = userData[2];
 					Security.addProvider(new BouncyCastleProvider());
 	            	File f = new File("keys/" + user + ".json");
         			File file1 = new File("C:/Users/IFES Yoga/Desktop/User/data/" + user + ".json");
             		File file = new File("C:/Users/IFES Yoga/Desktop/User/data/" + user + ".password.json");
+            		if(file1.exists()) {
+            			System.out.println("ERROR: User already exists");
+            		} else {
             		FileWriter myWriter1 = new FileWriter(file1);
 		    		FileWriter myWriter = new FileWriter(file);
 		    		SecureRandom random = new SecureRandom();
@@ -81,11 +84,14 @@ public class server {
 		    		myWriter1.close();
 		    		myWriter.write(hashpw + " . " +enc.encodeToString(salt)+" . "+saltpw);
 		    	    myWriter.close();
-				} 
+		    	    
+		    	    System.out.println("OK: User has been created");
+				} }
 				else if(s.equals("login")){ 
 					
 					String user = userData[1];
 					String password = userData[2];
+					File file = new File("C:/Users/IFES Yoga/Desktop/User/data/" + user + ".json");
 					File file1 = new File("C:/Users/IFES Yoga/Desktop/User/data/" + user + ".password.json");
 					String cipher = readLine(file1.toString());
 					String messageSplit[] = cipher.split(" . ");
@@ -94,14 +100,14 @@ public class server {
 					String filepw = messageSplit[2];
 					filepw= filepw.replaceAll("[\\n]", "");
 
-					
 				} else {
 						System.out.println("Wrong command name! ");
 				}
 				//echo the details of incoming data - client ip : client port - client message
 				//echo(incoming.getAddress().getHostAddress() + " : " + incoming.getPort() + " - " + s);
 				
-				s = "OK : " + s;
+				//s = "OK: " + s;
+				
 				DatagramPacket dp = new DatagramPacket(s.getBytes() , s.getBytes().length , incoming.getAddress() , incoming.getPort());
 				sock.send(dp);
 			}
