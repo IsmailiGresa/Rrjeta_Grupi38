@@ -48,6 +48,7 @@ public class client{
 	private static SecretKey DESSecretKey;
 	private static byte[] DESKey;
 	private static byte[] rndIV;
+	String s = "";
 	
 	public static void main (String[] args) 
 			throws NoSuchAlgorithmException, NoSuchProviderException, InvalidKeySpecException, URISyntaxException, ArrayIndexOutOfBoundsException{
@@ -71,13 +72,16 @@ public class client{
 					s += "" + cl.createUser();
 				} else if(s.equals("login")){ 
 					s += "" + cl.login();
-					expenses(s);
+					//expenses(s);
 				} else if(s.equals("expenses")){
 					expenses(s);
 				}else {
 						System.out.println("Wrong command name! ");
 				}
 				byte[] b = s.getBytes();
+				
+				
+				
 				DatagramPacket  dp = new DatagramPacket(b , b.length , host , port);
 				System.out.println(dp);
 				sock.send(dp);
@@ -169,21 +173,25 @@ public class client{
 
 		String loginData = "";
 		String username = "";
-		String password1 = "";
+		String password = "";
 		Scanner input = new Scanner(System.in);
+		System.out.print("Username: ");
+        username = input.next();
 		File file1 = new File("C:/Users/IFES Yoga/Desktop/User/keys/" + username + ".password.json");
 		if(file1.exists()) {
+			Scanner in = new Scanner(System.in);
             System.out.print("Password: ");
-            password1 = input.nextLine();
-            input.close();
+            password = in.nextLine();
+            //input.close();
+            loginData += " "+ username + " " + password;
             String cipher = readLine(file1.toString());
 			String messageSplit[] = cipher.split(" . ");
 			Base64.Encoder enc = Base64.getEncoder();
 			byte[] decodedsalt = Base64.getDecoder().decode(messageSplit[1]);
 			String filepw = messageSplit[2];
-			filepw= filepw.replaceAll("[\\n]", "");
-			String password2=new String(decodedsalt).concat(password1);
-			password2 =  enc.encodeToString(password2.getBytes());
+			filepw = filepw.replaceAll("[\\n]", "");
+			String password2 = new String(decodedsalt).concat(password);
+			password2 = enc.encodeToString(password2.getBytes());
 			if(password2.equals(filepw)) {
 				System.out.println("Correct");
 				RSAPublicKey publicKey = (RSAPublicKey) getpubKeyFromFile(username);
@@ -196,7 +204,7 @@ public class client{
 		return loginData;
 	}
 	
-private static void expenses(String username) {
+	private static void expenses(String username) {
 		
 		ArrayList<user> array = new ArrayList<user>();
         for(int i = 0 ; i < 100; i++){
@@ -320,28 +328,28 @@ private static void expenses(String username) {
 		return Base64.getEncoder().encodeToString(iv);
 	}
 
-	public static String encryptRSAText (String rawText, PublicKey publicKey) 
+	public static String encryptRSAText (String s, PublicKey publicKey) 
 			throws IOException, GeneralSecurityException {
         
 		Cipher cipher = Cipher.getInstance ("RSA/CBC/PKCS1Padding");
         cipher.init (Cipher.ENCRYPT_MODE, publicKey);
-        return Base64.getEncoder().encodeToString(cipher.doFinal (rawText.getBytes ("UTF-8")));
+        return Base64.getEncoder().encodeToString(cipher.doFinal (s.getBytes ("UTF-8")));
     }
 	
-	public static byte[] decryptRSAText (String string, PrivateKey privateKey) 
+	public static byte[] decryptRSAText (String s, PrivateKey privateKey) 
 			throws IOException, GeneralSecurityException {
         
 		Cipher cipher = Cipher.getInstance ("RSA/CBC/PKCS1Padding");
         cipher.init (Cipher.DECRYPT_MODE, privateKey);
-        return (cipher.doFinal (Base64.getDecoder().decode(string)));
+        return (cipher.doFinal (Base64.getDecoder().decode(s)));
     }
 	
-	public static boolean verify(String plainText, String signature, PublicKey publicKey) throws Exception {
+	public static boolean verify(String s, String signature, PublicKey publicKey) throws Exception {
 	    Signature publicSignature = Signature.getInstance("SHA256withRSA");
 	    try {
 	    	try {
 	    publicSignature.initVerify(publicKey);
-	    publicSignature.update(plainText.getBytes());
+	    publicSignature.update(s.getBytes());
 	    	}catch (InvalidKeyException e) {
 				System.out.println("\nNo Public Key.");
 			}
@@ -362,16 +370,15 @@ private static void expenses(String username) {
 	private static void getSecretDES() {
 		SecretKey originalKey = new SecretKeySpec(client.DESKey, 0, client.DESKey.length, "DES");
 		client.DESSecretKey = originalKey;
-		
 	}
 
-	private static String encryptDes(String username, String message)
+	private static String encryptDes(String username, String s)
 			throws InvalidKeySpecException, IOException, URISyntaxException, Exception {
 		getDESkey(username);
 		getSecretDES();
 		Cipher desCipher;
 		
-		message = encryptRSAText(message, getpubKeyFromFile(username));
+		s = encryptRSAText(s, getpubKeyFromFile(username));
 		// Create the cipher
 		desCipher = Cipher.getInstance("DES/CBC/PKCS5Padding");
 
@@ -379,7 +386,7 @@ private static void expenses(String username) {
 		desCipher.init(Cipher.ENCRYPT_MODE, DESSecretKey);
 
 		// sensitive information
-		byte[] text = message.getBytes();
+		byte[] text = s.getBytes();
 		// Encrypt the text
 		byte[] textEncrypted = desCipher.doFinal(text);
 
