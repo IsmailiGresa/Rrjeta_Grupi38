@@ -224,7 +224,7 @@ public class client{
 				
 				ArrayList<user> array = new ArrayList<user>();
 		        for(int i = 0 ; i < 1; i++){
-		            array.add(new user(Integer.toString(i), username, Integer.toString(i+100), Integer.toString(2022), Integer.toString(04), Integer.toString(i)));
+		           array.add(new user(id1, name1, Integer.toString(i+100), year1, month1, value1, type1));
 		        }
 		        JSONArray jsonArray = new JSONArray();
 		        for (int i = 0;i < array.size() ; i++) {
