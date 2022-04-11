@@ -62,7 +62,7 @@ public class server {
 					String user1 = userData[1];
 					String password = userData[2];
 					Security.addProvider(new BouncyCastleProvider());
-	            	File f = new File("keys/" + user + ".json");
+	            	File f = new File("keys/" + user1 + ".json");
         			File file1 = new File("C:/Users/IFES Yoga/Desktop/User/data/" + user1 + ".json");
             		File file = new File("C:/Users/IFES Yoga/Desktop/User/data/" + user1 + ".password.json");
             		if(file1.exists()) {
