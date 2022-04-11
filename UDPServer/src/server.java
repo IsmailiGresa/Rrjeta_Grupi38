@@ -59,12 +59,12 @@ public class server {
 				
 				if(userData[0].equals("create-user")) {
 
-					String user = userData[1];
+					String user1 = userData[1];
 					String password = userData[2];
 					Security.addProvider(new BouncyCastleProvider());
 	            	File f = new File("keys/" + user + ".json");
-        			File file1 = new File("C:/Users/IFES Yoga/Desktop/User/data/" + user + ".json");
-            		File file = new File("C:/Users/IFES Yoga/Desktop/User/data/" + user + ".password.json");
+        			File file1 = new File("C:/Users/IFES Yoga/Desktop/User/data/" + user1 + ".json");
+            		File file = new File("C:/Users/IFES Yoga/Desktop/User/data/" + user1 + ".password.json");
             		if(file1.exists()) {
             			System.out.println("ERROR: User already exists");
             		} else {
@@ -80,7 +80,7 @@ public class server {
 		    		Base64.Encoder enc = Base64.getEncoder();
 		    		String hashpw = enc.encodeToString(hash);
 		    		String saltpw =enc.encodeToString(password2.getBytes());
-		    		myWriter1.write(user);
+		    		myWriter1.write(user1);
 		    		myWriter1.close();
 		    		myWriter.write(hashpw + " . " +enc.encodeToString(salt)+" . "+saltpw);
 		    	    myWriter.close();
@@ -99,9 +99,13 @@ public class server {
 					byte[] decodedsalt = Base64.getDecoder().decode(messageSplit[1]);
 					String filepw = messageSplit[2];
 					filepw= filepw.replaceAll("[\\n]", "");
-
+					if(password.equals(filepw)) {
+						System.out.println("OK: User has logged in");
+					}else {
+						System.out.println("ERROR: User does not exist");
+					}
 				} else {
-						System.out.println("Wrong command name! ");
+						System.out.println("ERROR: Wrong command name! ");
 				}
 				//echo the details of incoming data - client ip : client port - client message
 				//echo(incoming.getAddress().getHostAddress() + " : " + incoming.getPort() + " - " + s);
