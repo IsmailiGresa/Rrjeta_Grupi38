@@ -199,9 +199,8 @@ public class client{
 				RSAPrivateKey privateKey = getprivKeyFromFile(username);
 				
 				ArrayList<user> array = new ArrayList<user>();
-				String expensesData = "";
 		        for(int i = 0 ; i < 1; i++){
-		            array.add(new user(Integer.toString(i), username, Integer.toString(i+100), Integer.toString(2022), Integer.toString(04), Integer.toString(i), Integer.toString(i)));
+		            array.add(new user(Integer.toString(i), username, Integer.toString(i+100), Integer.toString(2022), Integer.toString(04), Integer.toString(i)));
 		        }
 		        JSONArray jsonArray = new JSONArray();
 		        for (int i = 0;i < array.size() ; i++) {
@@ -215,9 +214,9 @@ public class client{
 		            objItem.put("type", array.get(i).getType());
 		            obj.put(username, objItem);
 		            jsonArray.put(obj);
-		            //expensesData = " " + array.get(i).getId() + " " + array.get(i).getName() + " " + array.get(i).getLastname() + " " + array.get(i).getYear() + " " + array.get(i).getMonth() + " " + array.get(i).getValue() + " " + array.get(i).getType();
+		            loginData += " " + array.get(i).getId() + " " + array.get(i).getName() + " " + array.get(i).getYear() + " " + array.get(i).getMonth() + " " + array.get(i).getValue() + " " + array.get(i).getType();
 		        }
-		        try (FileWriter file = new FileWriter("C:/Users/38349/OneDrive/Desktop/User/keys/" + username + ".json")) {
+		        try (FileWriter file = new FileWriter("C:/Users/IFES Yoga/Desktop/User/keys/" + username + ".json")) {
 		            file.write(jsonArray.toString());
 //		            System.out.println("Successfully Copied JSON Object to File...");
 		           System.out.println("\nJSON Object: " + jsonArray);
