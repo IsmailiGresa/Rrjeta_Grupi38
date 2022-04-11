@@ -198,6 +198,30 @@ public class client{
 				RSAPublicKey publicKey = (RSAPublicKey) getpubKeyFromFile(username);
 				RSAPrivateKey privateKey = getprivKeyFromFile(username);
 				
+				String name1 = "";
+				System.out.print("Name:\n");
+				name1 = in.nextLine();
+				
+				String id1 = "";
+				System.out.print("ID:\n");
+				id1 = in.nextLine();
+				
+				String month1 = "";
+				System.out.print("Month:\n");
+				month1 = in.nextLine();
+				
+				String year1 = "";
+				System.out.print("Year:\n");
+				year1 = in.nextLine();
+				
+				String value1 = "";
+				System.out.print("Value:\n");
+				value1 = in.nextLine();
+				
+				String type1 = "";
+				System.out.print("Type:\n");
+				type1 = in.nextLine();
+				
 				ArrayList<user> array = new ArrayList<user>();
 		        for(int i = 0 ; i < 1; i++){
 		            array.add(new user(Integer.toString(i), username, Integer.toString(i+100), Integer.toString(2022), Integer.toString(04), Integer.toString(i)));
