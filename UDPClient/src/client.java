@@ -73,14 +73,15 @@ public class client{
 				} else if(s.equals("login")){ 
 					s += "" + cl.login();
 					//expenses(s);
-				} else if(s.equals("expenses")){
-					expenses(s);
-				}else {
+					//s += "" + cl.expenses(s);
+				} 
+// 				else if(s.equals("expenses")){
+// 					expenses(s);
+// 				}
+				else {
 						System.out.println("Wrong command name! ");
 				}
 				byte[] b = s.getBytes();
-				
-				
 				
 				DatagramPacket  dp = new DatagramPacket(b , b.length , host , port);
 				System.out.println(dp);
@@ -196,6 +197,34 @@ public class client{
 				System.out.println("Correct");
 				RSAPublicKey publicKey = (RSAPublicKey) getpubKeyFromFile(username);
 				RSAPrivateKey privateKey = getprivKeyFromFile(username);
+				
+				ArrayList<user> array = new ArrayList<user>();
+				String expensesData = "";
+		        for(int i = 0 ; i < 1; i++){
+		            array.add(new user(Integer.toString(i), username, Integer.toString(i+100), Integer.toString(2022), Integer.toString(04), Integer.toString(i), Integer.toString(i)));
+		        }
+		        JSONArray jsonArray = new JSONArray();
+		        for (int i = 0;i < array.size() ; i++) {
+		            JSONObject obj = new JSONObject();
+		            JSONObject objItem =  new JSONObject();
+		            objItem.put("id", array.get(i).getId());
+		            objItem.put("name",  array.get(i).getName());
+		            objItem.put("year", array.get(i).getYear());
+		            objItem.put("month", array.get(i).getMonth());
+		            objItem.put("value", array.get(i).getValue());
+		            objItem.put("type", array.get(i).getType());
+		            obj.put(username, objItem);
+		            jsonArray.put(obj);
+		            //expensesData = " " + array.get(i).getId() + " " + array.get(i).getName() + " " + array.get(i).getLastname() + " " + array.get(i).getYear() + " " + array.get(i).getMonth() + " " + array.get(i).getValue() + " " + array.get(i).getType();
+		        }
+		        try (FileWriter file = new FileWriter("C:/Users/38349/OneDrive/Desktop/User/keys/" + username + ".json")) {
+		            file.write(jsonArray.toString());
+//		            System.out.println("Successfully Copied JSON Object to File...");
+		           System.out.println("\nJSON Object: " + jsonArray);
+		        } catch(Exception e){
+		            System.out.println(e);
+		        	}
+				
 			}else {
 				System.out.println("Incorrect");
 			}}else {
@@ -204,35 +233,9 @@ public class client{
 		return loginData;
 	}
 	
-	private static void expenses(String username) {
-		
-		ArrayList<user> array = new ArrayList<user>();
-        for(int i = 0 ; i < 100; i++){
-            array.add(new user(i+"", i+"", i+"", i+"", i+"", i+"", i+"", i+""));
-        }
-        JSONArray jsonArray = new JSONArray();
-        for (int i = 0;i < array.size() ; i++) {
-            JSONObject obj = new JSONObject();
-            JSONObject objItem =  new JSONObject();
-            objItem.put("id", array.get(i).getId());
-            objItem.put("name",  array.get(i).getName());
-            objItem.put("lastname",  array.get(i).getLastname());
-
-            objItem.put("year", array.get(i).getYear());
-            objItem.put("month", array.get(i).getMonth());
-            objItem.put("value", array.get(i).getValue());
-            objItem.put("type", array.get(i).getType());
-            obj.put("user", objItem);
-            jsonArray.put(obj);
-        }
-        try (FileWriter file = new FileWriter("C:/Users/IFES Yoga/Desktop/User/keys/" + username + ".json")) {
-            file.write(jsonArray.toString());
-            System.out.println("Successfully Copied JSON Object to File...");
-            System.out.println("\nJSON Object: " + jsonArray);
-        } catch(Exception e){
-            System.out.println(e);
-        	}
-        }
+// 	private static void expenses(String username) {
+// 		return expensesData;
+//         }
 	
 	private static KeyPair generateRSAKeyPair() throws NoSuchAlgorithmException, NoSuchProviderException {
 		
