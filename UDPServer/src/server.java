@@ -114,11 +114,10 @@ public class server {
 					String user1 = userData[1];
 					String password = userData[2];
 					String id = userData[3];
-					String name = userData[4];
-					String year = userData[5];
-					String month = userData[6];
-					String value = userData[7];
-					String type = userData[8];
+					String year = userData[4];
+					String month = userData[5];
+					String value = userData[6];
+					String type = userData[7];
 					
 					
 					File file1 = new File("C:/Users/IFES Yoga/Desktop/User/data/" + user1 + ".password.json");
@@ -130,16 +129,16 @@ public class server {
 					filepw= filepw.replaceAll("[\\n]", "");
 					if(file1.exists()) {
 						System.out.println("OK: User has logged in");
+						
 						ArrayList<user> array = new ArrayList<user>();
 				        for(int i = 0 ; i < 1; i++){
-				            array.add(new user(Integer.toString(i), user1, Integer.toString(i+100), Integer.toString(2022), Integer.toString(04), Integer.toString(i)));
+				            array.add(new user(id, year, month, value, type));
 				        }
 						 JSONArray jsonArray = new JSONArray();
 					        for (int i = 0;i < array.size() ; i++) {
 					            JSONObject obj = new JSONObject();
 					            JSONObject objItem =  new JSONObject();
 					            objItem.put("id", array.get(i).getId());
-					            objItem.put("name",  array.get(i).getName());
 					            objItem.put("year", array.get(i).getYear());
 					            objItem.put("month", array.get(i).getMonth());
 					            objItem.put("value", array.get(i).getValue());
