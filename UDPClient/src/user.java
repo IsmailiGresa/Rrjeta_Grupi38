@@ -3,11 +3,10 @@ public class user {
 	 private String user;
 	    public String id, name, lastname, bill, year, month, value, type;
 
-	    public user(String id, String name, String lastname, String bill, String year, String month, String value, String type) {
+	    public user(String id, String name, String bill, String year, String month, String value, String type) {
 	        this.user = "user";
 	        this.id = id;
 	        this.name = name;
-	        this.lastname = lastname;
 	        this.bill = bill;
 	        this.year = year;
 	        this.month = month;
@@ -25,9 +24,6 @@ public class user {
 	    }
 	    public String getName() {
 	        return name;
-	    }
-	    public String getLastname() {
-	    	return lastname;
 	    }
 	    public String getBill() {
 	        return bill;
@@ -53,9 +49,6 @@ public class user {
 	    public void setName(String name) {
 	        this.name = name;
 	    }	    
-	    public void setLastname(String lastname) {
-	        this.lastname = lastname;
-	    }
 	    public void setBill(String bill) {
 	        this.bill = bill;
 	    }
