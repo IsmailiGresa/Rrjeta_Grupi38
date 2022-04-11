@@ -120,7 +120,7 @@ public class client{
 		            System.out.print("Password: ");
 		            password = input.next();
 		            accountData += " "+ username + " " + password;
-		            String regex = "((?=.*[A-Za-z])(?=.*\\d)(?=.*[@$!%*#?&])[A-Za-z\\d@$!%*#?&]{6,})";
+		            String regex = "((?=.[A-Za-z])(?=.\\d)(?=.[@$!%#?&])[A-Za-z\\d@$!%*#?&]{6,})";
 		            Pattern pattern = Pattern.compile(regex);
 		            Matcher matcher = pattern.matcher(password);
 		            if(matcher.matches()) {
@@ -197,48 +197,44 @@ public class client{
 				System.out.println("Correct");
 				RSAPublicKey publicKey = (RSAPublicKey) getpubKeyFromFile(username);
 				RSAPrivateKey privateKey = getprivKeyFromFile(username);
+
+				String id = "";
+				System.out.print("ID: ");
+				id = in.nextLine();
 				
-				String name1 = "";
-				System.out.print("Name:\n");
-				name1 = in.nextLine();
+				String month = "";
+				System.out.print("Month: ");
+				month = in.nextLine();
 				
-				String id1 = "";
-				System.out.print("ID:\n");
-				id1 = in.nextLine();
+				String year = "";
+				System.out.print("Year: ");
+				year = in.nextLine();
 				
-				String month1 = "";
-				System.out.print("Month:\n");
-				month1 = in.nextLine();
+				String value = "";
+				System.out.print("Value: ");
+				value = in.nextLine();
 				
-				String year1 = "";
-				System.out.print("Year:\n");
-				year1 = in.nextLine();
-				
-				String value1 = "";
-				System.out.print("Value:\n");
-				value1 = in.nextLine();
-				
-				String type1 = "";
-				System.out.print("Type:\n");
-				type1 = in.nextLine();
+				String type = "";
+				System.out.print("Type: ");
+				type = in.nextLine();
 				
 				ArrayList<user> array = new ArrayList<user>();
 		        for(int i = 0 ; i < 1; i++){
-		           array.add(new user(id1, name1, Integer.toString(i+100), year1, month1, value1, type1));
+		           array.add(new user(id,  year, month, value, type));
 		        }
 		        JSONArray jsonArray = new JSONArray();
 		        for (int i = 0;i < array.size() ; i++) {
 		            JSONObject obj = new JSONObject();
 		            JSONObject objItem =  new JSONObject();
 		            objItem.put("id", array.get(i).getId());
-		            objItem.put("name",  array.get(i).getName());
 		            objItem.put("year", array.get(i).getYear());
 		            objItem.put("month", array.get(i).getMonth());
 		            objItem.put("value", array.get(i).getValue());
 		            objItem.put("type", array.get(i).getType());
 		            obj.put(username, objItem);
 		            jsonArray.put(obj);
-		            loginData += " " + array.get(i).getId() + " " + array.get(i).getName() + " " + array.get(i).getYear() + " " + array.get(i).getMonth() + " " + array.get(i).getValue() + " " + array.get(i).getType();
+		            System.out.println(jsonArray);
+		            loginData += " " + array.get(i).getId() + " " + array.get(i).getYear() + " " + array.get(i).getMonth() + " " + array.get(i).getValue() + " " + array.get(i).getType();
 		        }
 		        try (FileWriter file = new FileWriter("C:/Users/IFES Yoga/Desktop/User/keys/" + username + ".json")) {
 		            file.write(jsonArray.toString());
@@ -438,4 +434,3 @@ public class client{
 	}
 	//simple function to echo data to terminal
 }
-	
