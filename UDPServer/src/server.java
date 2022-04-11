@@ -249,8 +249,8 @@ public class server {
 		SecureRandom random = new SecureRandom();
 		byte iv[] = new byte[8]; // generate random 8 byte IV.
 		random.nextBytes(iv);
-		client.rndIV = iv;
-		return client.rndIV;
+	server.rndIV = iv;
+		return server.rndIV;
 	}
 
 	private static String base64IV() {
@@ -300,13 +300,13 @@ public class server {
 	private static void getDESkey(String username)
 			throws InvalidKeySpecException, NoSuchAlgorithmException, IOException, URISyntaxException, Exception {
 
-		byte[] decodedKey = Base64.getDecoder().decode(encryptRSA(client.rndIV, getpubKeyFromFile(username)));
-		client.DESKey = decodedKey;
+		byte[] decodedKey = Base64.getDecoder().decode(encryptRSA(server.rndIV, getpubKeyFromFile(username)));
+		server.DESKey = decodedKey;
 	}
 
 	private static void getSecretDES() {
-		SecretKey originalKey = new SecretKeySpec(client.DESKey, 0, client.DESKey.length, "DES");
-		client.DESSecretKey = originalKey;
+		SecretKey originalKey = new SecretKeySpec(server.DESKey, 0, server.DESKey.length, "DES");
+		server.DESSecretKey = originalKey;
 	}
 
 	private static String encryptDes(String username, String s)
@@ -334,7 +334,7 @@ public class server {
 			throws InvalidKeySpecException, NoSuchAlgorithmException, IOException, URISyntaxException, Exception {
 		
 		
-		return (base64IV() + " . " + encryptRSA(client.rndIV, getpubKeyFromFile(username))
+		return (base64IV() + " . " + encryptRSA(server.rndIV, getpubKeyFromFile(username))
 				+ " . " + encryptDes(username, message));
 	}
 	
